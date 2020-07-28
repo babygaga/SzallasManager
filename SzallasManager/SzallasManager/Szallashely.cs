@@ -54,6 +54,8 @@ namespace SzallasManager
             return $"{azonosito}";
         }
 
+        abstract public int Arszamito();
+       
 
 
 
