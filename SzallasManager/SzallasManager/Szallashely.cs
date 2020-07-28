@@ -42,7 +42,12 @@ namespace SzallasManager
         }
         internal Szallasfajta Szallasfajta { get => szallasfajta; /*set => szallasfajta = value; */}
 
-
+        protected Szallashely(string azonosito, Cim cim, Szallasfajta szallasfajta)
+        {
+            Azonosito = azonosito;
+            Cim = cim;
+            this.szallasfajta = szallasfajta;
+        }
 
         public override string ToString()
         {

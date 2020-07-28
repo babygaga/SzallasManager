@@ -70,9 +70,18 @@ namespace SzallasManager
             }
         }
 
+        public Cim(short irsz, string varos, string utca, short hsz) : this()
+        {
+            Irsz = irsz;
+            Varos = varos;
+            Utca = utca;
+            Hsz = hsz;
+        }
 
 
-
-
+        public override string ToString()
+        {
+            return$"{irsz}-{varos}";
+        }
     }
 }
