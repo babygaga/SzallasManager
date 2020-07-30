@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SzallasManager
 {
-    class EpitettSzallashely : Szallashely
+  abstract class EpitettSzallashely : Szallashely
     {
         byte csillagokszama;
         int szobaar;
