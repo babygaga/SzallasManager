@@ -44,7 +44,7 @@ namespace SzallasManager
             get => utca;
             set
             {
-                if (value.Length == 8)
+                if (value.Length > 0)
                 {
                     utca = value;
                 }

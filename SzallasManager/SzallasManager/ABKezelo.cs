@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace SzallasManager
 {
-    class ABKezelo
+    static class ABKezelo
     {
         static SqlConnection connection;
         static SqlCommand command;
 
-        
 
-         ABKezelo()
+
+        static ABKezelo()
         {
             try
             {
@@ -61,32 +61,32 @@ namespace SzallasManager
                 if (uj is Camping cam)
                 {
                     command.CommandText = "INSERT INTO [Camping] VALUES (@az, @viz)";
-                    command.Parameters.AddWithValue("@viz",cam.Vizparti);
+                    command.Parameters.AddWithValue("@viz", cam.Vizparti);
                     command.ExecuteNonQuery();
                 }
-                
+
                 else if (uj is EpitettSzallashely epit)
                 {
                     command.CommandText = "INSERT INTO [Epitettszallashely] VALUES (@az, @csill, @szob)";
                     command.Parameters.AddWithValue("@csill", epit.Csillagokszama);
                     command.Parameters.AddWithValue("@szoob", epit.Szobaar);
                     command.ExecuteNonQuery();
-                    if(epit is Szalloda szall)
+                    if (epit is Szalloda szall)
                     {
                         command.CommandText = "INSERT INTO [Szalloda] VALUES (@az, @well )";
                         command.Parameters.AddWithValue("@well", szall.Vanwellness);
                         command.ExecuteNonQuery();
                     }
-                    else if(epit is Panzio panz)
+                    else if (epit is Panzio panz)
                     {
                         command.CommandText = "INSERT INTO [Panzio] VALUES (@az, @reg)";
                         command.Parameters.AddWithValue("@@reg", panz.Vanreggeli);
-   
-                        
+
+
                     }
                     command.ExecuteNonQuery();
                 }
-           
+
                 command.Transaction.Commit();
             }
             catch (Exception ex)
@@ -103,43 +103,43 @@ namespace SzallasManager
             }
         }
 
-     
 
-       /*public static void KolcsonzoModositas(Szallashely modosit)
-        {
-            try
-            {
-                command.Parameters.Clear();
-                command.CommandText = "UPDATE [Kolcsonzo] SET [Megnevezes] = @megn WHERE [Id] = @id";
-                command.Parameters.AddWithValue("@megn", modosit.Megnevezes);
-                command.Parameters.AddWithValue("@id", modosit.Id);
-                command.ExecuteNonQuery();
-            }
-            catch (Exception ex)
-            {
-                throw new ABKivetel("Sikertelen kölcsönző módosítás!", ex);
-            }
-        }*/
 
-    
+        /*public static void KolcsonzoModositas(Szallashely modosit)
+         {
+             try
+             {
+                 command.Parameters.Clear();
+                 command.CommandText = "UPDATE [Kolcsonzo] SET [Megnevezes] = @megn WHERE [Id] = @id";
+                 command.Parameters.AddWithValue("@megn", modosit.Megnevezes);
+                 command.Parameters.AddWithValue("@id", modosit.Id);
+                 command.ExecuteNonQuery();
+             }
+             catch (Exception ex)
+             {
+                 throw new ABKivetel("Sikertelen kölcsönző módosítás!", ex);
+             }
+         }*/
 
-      
 
-        public static void JarmuTorles(Szallashely torol)
+
+
+
+        public static void SzallasTorles(Szallashely torol)
         {
             try
             {
                 command.Parameters.Clear();
                 command.Transaction = connection.BeginTransaction();
-            
-               
+
+
                 command.Parameters.AddWithValue("@az", torol.Azonosito);
                 if (torol is Camping cam)
                 {
                     command.CommandText = "DELETE FROM [Camping] WHERE [Azonosito] = @az";
                     command.ExecuteNonQuery();
                 }
-                else if(torol is EpitettSzallashely )
+                else if (torol is EpitettSzallashely)
                 {
                     if (torol is Szalloda)
                     {
@@ -148,11 +148,11 @@ namespace SzallasManager
                     else if (torol is Panzio)
                     {
                         command.CommandText = "DELETE FROM [Panzio] WHERE [Azonosito] = @az";
-                      
+
                     }
                     command.ExecuteNonQuery();
                 }
-             
+
                 command.CommandText = "DELETE FROM [Szallashely] WHERE [Rendszam] = @az";
                 command.ExecuteNonQuery();
                 command.Transaction.Commit();
@@ -171,16 +171,16 @@ namespace SzallasManager
             }
         }
 
-        public static List<Szallashely> TeljesFelolvasas()
+        public static Szallashelylista TeljesFelolvasas()
         {
             try
             {
-                command.Parameters.Clear();
+                Szallashelylista szallh = new Szallashelylista();
                 command.CommandText = "SELECT * FROM Szallashely LEFT JOIN Camping ON Szallashely.Azonosito = Camping.Azonosito LEFT JOIN Epitettszallashely ON Szallashely.Azonosito = Epitettszallashely.Azonosito LEFT JOIN Szalloda ON Szallashely.Azonosito = Szalloda.Azonosito LEFT JOIN Panzio ON Szallashely.Azonosito = Panzio.Azonosito";
-                List<Szallashely> szallh = new Szallashelylista();
+
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
-                    while (reader.Read())
+                    while (!reader.Read())
                     {
                         if (!reader.IsDBNull(6))
                         {
@@ -191,16 +191,16 @@ namespace SzallasManager
                                     (string)reader["Varos"],
                                    (string)reader["Utca"],
                                     (short)(int)reader["Hsz"]
-                                   ),                             
-                                    (Szallasfajta)(int)reader["Fajta"],
+                                   ),
+                                    (Szallasfajta)(byte)reader["Fajta"],
                                    (bool)reader["Vizparti"]
                                     )
                                 );
                         }
-           
-                      else  if (!reader.IsDBNull(9))
+
+                        else if (!reader.IsDBNull(9))
                         {
-                            
+
                             if (!reader.IsDBNull(12))
                             {
                                 szallh.Add(new Szalloda(
@@ -212,7 +212,7 @@ namespace SzallasManager
                                     (short)(int)reader["Hsz"]
                                     ),
 
-                                    (Szallasfajta)(int)reader["Fajta"],
+                                    (Szallasfajta)(byte)reader["Fajta"],
                                     (byte)reader["Csllagokszam"],
                                     (int)reader["Szobaar"],
                                      (bool)reader["Vanwellness"]
@@ -231,7 +231,7 @@ namespace SzallasManager
                                         (short)(int)reader["Hsz"]
                                         ),
 
-                                        (Szallasfajta)(int)reader["Fajta"],
+                                        (Szallasfajta)(byte)reader["Fajta"],
                                         (byte)reader["Csllagokszam"],
                                         (int)reader["Szobaar"],
                                           (bool)reader["Vanreggel"]
@@ -239,7 +239,7 @@ namespace SzallasManager
                                     );
                             }
                         }
-                      
+
                     }
                     reader.Close();
                 }
