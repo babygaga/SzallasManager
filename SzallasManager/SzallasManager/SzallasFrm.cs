@@ -48,6 +48,7 @@ namespace SzallasManager
                         szh = new Panzio(textBox1.Text, new Cim((short)numericUpDown1.Value, textBox2.Text, textBox3.Text, (short)numericUpDown2.Value), (Szallasfajta)comboBox1.SelectedItem, (byte)numericUpDown3.Value, (int)numericUpDown4.Value, checkBox3.Checked);
                         break;
                 }
+                ABKezelo.UjSzallashely(szh);
             }
             catch (Exception ex)
             {

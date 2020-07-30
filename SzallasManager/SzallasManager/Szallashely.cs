@@ -15,8 +15,9 @@ namespace SzallasManager
     }
     abstract class Szallashely
     {
-        Cim cim;
+      
         string azonosito;
+        Cim cim;
         Szallasfajta szallasfajta;
 
         public string Azonosito
