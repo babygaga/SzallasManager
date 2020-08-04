@@ -182,7 +182,7 @@ namespace SzallasManager
                 {
                     while (reader.Read())
                     {
-                        if (!reader.IsDBNull(6))
+                        if (!reader.IsDBNull(7))
                         {
                             szallh.Add(new Camping(
                                      (string)reader["Azonosito"],
