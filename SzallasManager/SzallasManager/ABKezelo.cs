@@ -52,7 +52,7 @@ namespace SzallasManager
                 command.Transaction = connection.BeginTransaction();
                 command.CommandText = "INSERT INTO [Szallashely] VALUES (@az, @ir, @var, @utc,   @haz, @faj)";
                 command.Parameters.AddWithValue("@az", uj.Azonosito);
-                command.Parameters.AddWithValue("@irsz", uj.Cim.Irsz);
+                command.Parameters.AddWithValue("@ir", uj.Cim.Irsz);
                 command.Parameters.AddWithValue("@var", uj.Cim.Varos);
                 command.Parameters.AddWithValue("@utc", uj.Cim.Utca);
                 command.Parameters.AddWithValue("@haz", uj.Cim.Hsz);
@@ -69,18 +69,18 @@ namespace SzallasManager
                 {
                     command.CommandText = "INSERT INTO [Epitettszallashely] VALUES (@az, @csill, @szob)";
                     command.Parameters.AddWithValue("@csill", epit.Csillagokszama);
-                    command.Parameters.AddWithValue("@szoob", epit.Szobaar);
+                    command.Parameters.AddWithValue("@sz    ob", epit.Szobaar);
                     command.ExecuteNonQuery();
                     if (epit is Szalloda szall)
                     {
                         command.CommandText = "INSERT INTO [Szalloda] VALUES (@az, @well )";
                         command.Parameters.AddWithValue("@well", szall.Vanwellness);
-                        command.ExecuteNonQuery();
+                        //command.ExecuteNonQuery();
                     }
                     else if (epit is Panzio panz)
                     {
                         command.CommandText = "INSERT INTO [Panzio] VALUES (@az, @reg)";
-                        command.Parameters.AddWithValue("@@reg", panz.Vanreggeli);
+                        command.Parameters.AddWithValue("@reg", panz.Vanreggeli);
 
 
                     }
@@ -213,7 +213,7 @@ namespace SzallasManager
                                     ),
 
                                     (Szallasfajta)(byte)reader["Fajta"],
-                                    (byte)reader["Csllagokszama"],
+                                    (byte)reader["Csillagokszama"],
                                     (int)reader["Szobaar"],
                                      (bool)reader["Vanwellness"]
                                     )
@@ -232,7 +232,7 @@ namespace SzallasManager
                                         ),
 
                                         (Szallasfajta)(byte)reader["Fajta"],
-                                        (byte)reader["Csllagokszama"],
+                                        (byte)reader["Csillagokszama"],
                                         (int)reader["Szobaar"],
                                           (bool)reader["Vanreggel"]
                                         )
