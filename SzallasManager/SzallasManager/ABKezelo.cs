@@ -69,7 +69,7 @@ namespace SzallasManager
                 {
                     command.CommandText = "INSERT INTO [Epitettszallashely] VALUES (@az, @csill, @szob)";
                     command.Parameters.AddWithValue("@csill", epit.Csillagokszama);
-                    command.Parameters.AddWithValue("@sz    ob", epit.Szobaar);
+                    command.Parameters.AddWithValue("@szob", epit.Szobaar);
                     command.ExecuteNonQuery();
                     if (epit is Szalloda szall)
                     {
@@ -153,7 +153,7 @@ namespace SzallasManager
                     command.ExecuteNonQuery();
                 }
 
-                command.CommandText = "DELETE FROM [Szallashely] WHERE [Rendszam] = @az";
+                command.CommandText = "DELETE FROM [Szallashely] WHERE [Azonosito] = @az";
                 command.ExecuteNonQuery();
                 command.Transaction.Commit();
             }
