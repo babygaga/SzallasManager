@@ -180,7 +180,7 @@ namespace SzallasManager
 
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
-                    while (!reader.Read())
+                    while (reader.Read())
                     {
                         if (!reader.IsDBNull(6))
                         {
@@ -213,7 +213,7 @@ namespace SzallasManager
                                     ),
 
                                     (Szallasfajta)(byte)reader["Fajta"],
-                                    (byte)reader["Csllagokszam"],
+                                    (byte)reader["Csllagokszama"],
                                     (int)reader["Szobaar"],
                                      (bool)reader["Vanwellness"]
                                     )
@@ -232,7 +232,7 @@ namespace SzallasManager
                                         ),
 
                                         (Szallasfajta)(byte)reader["Fajta"],
-                                        (byte)reader["Csllagokszam"],
+                                        (byte)reader["Csllagokszama"],
                                         (int)reader["Szobaar"],
                                           (bool)reader["Vanreggel"]
                                         )
